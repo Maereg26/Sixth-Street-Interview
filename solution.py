@@ -6,7 +6,7 @@ data = r.json()
 
 API_key = "HEKMRH828HI04N23"
 def lookup(symbol, date, API_key):
-    paramters = {
+    parameters = {
         "function": "TIME_SERIES_DAILY",
         "symbol": symbol,
         "API_key": API_key,
@@ -42,3 +42,17 @@ def lookup(symbol, date, API_key):
 
     return response_format
 
+def minimum_price(symbol, n, API_key):
+    parameters = {
+        "function": "TIME_SERIES_DAILY",
+        "symbol": symbol,
+        "API_key": API_key,
+    }
+
+    try:
+        time_series = data["Time Series (Daily)"]
+        dates = list(time_series.keys())[:n]
+        prices = [float(time_series[data]["3. low"]) for date in dates]
+        return min(prices)
+    except KeyError:
+        raise ValueError("Insufficient data provided.")
