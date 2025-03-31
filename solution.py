@@ -52,7 +52,26 @@ def minimum_price(symbol, n, API_key):
     try:
         time_series = data["Time Series (Daily)"]
         dates = list(time_series.keys())[:n]
+        #float for prices
         prices = [float(time_series[data]["3. low"]) for date in dates]
         return min(prices)
+    except KeyError:
+        raise ValueError("Insufficient data provided.")
+    
+
+
+def maximum_price(Symbol, n, API_key):
+    parameters = {
+        "function": "TIME_SERIES_DAILY",
+        "symbol": symbol,
+        "API_key": API_key,
+    }
+
+    try:
+        time_series = data["Time Series (Daily)"]
+        dates = list(time_series.keys())[:n]
+        prices = [float(time_series[date]["2. high"]) for date in dates]
+        return max(prices)
+    
     except KeyError:
         raise ValueError("Insufficient data provided.")
